@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../components/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            position: relative;
+        }
+        #canvas {
+            position: absolute;
+            border: 1px solid #ccc;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        #operateInsert{
+            width:200px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        #insert,#sort{
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="alert alert-info" role="alert" style="text-align: center">
+    注： 为确保演示效果，默认最多演示十个元素
+</div>
+<canvas id="canvas" width="1000" height="500">
+
+</canvas>
+
+<input type="text" class="form-control" placeholder="请输入插入元素的值..." id="operateInsert">
+<br>
+<button type="button" id="insert" class="btn btn-primary">插入</button>
+<button type="button" id="sort" class="btn btn-primary">排序</button>
+<br><br>
+
+</body>
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+
+        //判断浏览器是否支持canvas
+        if (canvas.getContext("2d")) {
+            var context = canvas.getContext("2d");
+        } else {
+            alert("当前浏览器不支持canvas，请更换浏览器稍后再试")
+        }
+
+        var array = [];
+        var times=0;
+        drawInsertSort(context,array,-1);
+
+        //插入操作
+        $("#insert").click(function () {
+            var pattern = /^(-)?\d+(\.\d+)?$/;
+            if(array.length>=10){
+                alert("警告：为保证演示质量，默认最多添加10个元素");
+            } else if (pattern.exec($("#operateInsert").val()) == null||$("#operateInsert").val()==""){
+                alert("请输入正确的数字");
+            } else {
+                array[array.length]=$("#operateInsert").val();
+                drawInsertSort(context,array,-1,times,false);
+                //将数组中字符类型转换为数字类型
+                for(var i=0;i<array.length;i++){
+                    array[i]=parseInt(array[i]);
+                }
+                $("#operateInsert").val("");
+            }
+        });
+
+        $("#sort").click(function () {
+            //每排序一次清空一次画布
+            context.clearRect(0,0,1000,500);
+            drawInsertSort(context,array,-1,times,false);
+            var i,j,temp,k;
+            i=0;
+            var selectSortInterval=setInterval(function () {
+                k=i;
+                for(j=i+1;j<array.length;j++)
+                {
+                    console.log(j);
+                    if(array[k]>array[j]){
+                        k=j;
+                        //console.log("23");
+                    }
+                }
+                console.log(array);
+                if (i!==k){
+                    temp=array[i];
+                    array[i]=array[k];
+                    array[k]=temp;
+                }
+                console.log(array);
+                drawInsertSort(context,array,i,i+1,true);
+                i++;
+                if (i>=array.length)
+                    clearInterval(selectSortInterval);
+            },1000);
+
+
+        })
+    };
+
+
+</script>
+</html>

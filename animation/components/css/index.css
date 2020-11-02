@@ -1,0 +1,41 @@
+html, body{
+	width: 100%;
+	height:100%;
+	margin: 0;
+	padding: 0;
+	background-size: 100% 100%;
+}
+#surface{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+}
+#core{
+	 width: 100%;
+	 height: 12%;
+	 background-color: rgba(96,96,96,0.5);
+	 vertical-align: middle;
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 transform: translate(-50%, -50%);
+	 /*box-shadow:0 0 10px 20px #fff inset;
+     border-radius: 5%;*/
+	 text-align: center;
+ }
+#core p{
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	margin: 0;
+	padding: 0;
+	vertical-align: center;
+	color: #FFFFFF;
+	font-size: 18px;
+	font-family: Courier, monospace;
+	cursor: pointer;
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../components/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            position: relative;
+        }
+        #canvas {
+            position: absolute;
+            border: 1px solid #ccc;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        #insertLNode{
+            width:200px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        #headInsertLNode,#tailInsertLNode{
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="alert alert-info" role="alert" style="text-align: center">
+    注： 为确保演示效果，默认最多演示十个元素
+</div>
+<canvas id="canvas" width="900" height="600">
+
+</canvas>
+
+<input type="text" class="form-control" placeholder="请输入插入元素的值..." id="insertLNode">
+<br>
+<button type="button" id="headInsertLNode" class="btn btn-primary">头插法</button>
+<button type="button" id="tailInsertLNode" class="btn btn-primary">尾插法</button>
+<br><br>
+
+</body>
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+
+        //判断浏览器是否支持canvas
+        if (canvas.getContext("2d")) {
+            var context = canvas.getContext("2d");
+        } else {
+            alert("当前浏览器不支持canvas，请更换浏览器稍后再试")
+        }
+        //drawLnodeItem(context,200,200,100,60,1,'#000','#fff','12',0);
+
+        var LNode = [];
+        //drawLnodeItem(context,40,400,80,40,1,"#444","#fff","head",1);
+        LNode[0]="head";
+        //创建image对象
+        var img = new Image();
+
+
+        //头插法
+        $("#headInsertLNode").click(function () {
+            //绘制图像
+            context.clearRect(0,0,400,500);
+            img.src='../components/img/LNodeHead.png';
+            img.onload = function(){
+                context.drawImage(img,450-img.width/2,40);
+                console.log(img.width);
+            }
+
+
+            var pattern = /^[a-z]+$/;
+
+            if (LNode.length > 10){
+                alert("表已满，不能再插入");
+                $("#insertLNode").val("");
+            } else if (pattern.exec($("#insertLNode").val()) == null || $("#insertLNode").val() == "") {
+                //使用正则表达式判断输入的内容是否为大写字母
+                alert("请输入正确的字母");
+                $("#insertLNode").val("");
+            }
+            else {
+                //绘制过渡动画
+                //LNode=["dd","dee","efe"];
+
+                var times=4;
+                //设置定时器完成动画效果
+                var clock = setInterval(function () {
+                    context.clearRect(0,499,900,200);
+                    drawLnodeItem(context,40,500,80,40,1,"#444","#fff",LNode[0],3);
+                    context.save();
+                   //绘制后边几个元素，隔开164像素的距离
+                    context.translate(times,0);
+                    for(var j=1;j<LNode.length;j++){
+                        if(j === LNode.length - 1){
+                            drawLnodeItem(context,204,500,80,40,1,"#444","#fff",LNode[j],1);
+                        } else {
+                            drawLnodeItem(context,204,500,80,40,1,"#444","#fff",LNode[j],0);
+                        }
+                        context.translate(164,0);
+                    }
+                    //绘制要加入的元素
+                    context.restore();
+                    context.clearRect(203,418+times/2-10,122,10);
+                    drawLnodeItem(context,204,418+times/2,80,40,1,"#444","#FFFF00",$("#insertLNode").val(),2);
+                    context.clearRect(203-40,418+times/2,40,82);
+                    drawLineArrow(context,154,520,204,418+times/2+20);
+                    if(LNode.length!==1){
+                        context.clearRect(204,418+times/2+40,80,40);
+                        drawLineArrow(context,154+164,418+times/2+20,164+40+times,520);
+
+                    }
+
+                    times+=10;
+                    if (times >= 174){
+                        clearInterval(clock);
+                    }
+                },100);
+
+                //绘制最终结果
+                setTimeout(function () {
+                    console.log(LNode);
+                    for(var i=LNode.length-1;i>0;i--){
+                        LNode[i+1]=LNode[i];
+                    }
+                    LNode[1]=$("#insertLNode").val();
+                    console.log($("#insertLNode").val());
+                    //开始绘制，首先清空画布
+                    context.clearRect(0,499,900,600);
+                    //context.translate(40,0);
+                    context.save();
+                    context.translate(40,0);
+                    drawLnodeItem(context,0,500,80,40,1,"#444","#fff",LNode[0],4);
+                    for(var j=1;j<LNode.length;j++){
+                        context.translate(164,0);
+                        console.log(j);
+                        if(j === LNode.length - 1){
+                            drawLnodeItem(context,0,500,80,40,1,"#444","#fff",LNode[j],1);
+                        } else {
+                            drawLnodeItem(context,0,500,80,40,1,"#444","#fff",LNode[j],0);
+                        }
+
+                    }
+                    context.restore();
+                    $("#insertLNode").val("");
+                },3000)
+
+
+
+            }
+            //
+        });
+        $("#tailInsertLNode").click(function () {
+            //绘制图像
+            context.clearRect(0,0,400,500);
+            img.src='../components/img/LNodeTail.png';
+            img.onload = function(){
+                context.drawImage(img,450-img.width/2,40);
+                console.log(img.width);
+            }
+
+
+            var pattern = /^[a-z]+$/;
+
+            if (LNode.length > 10){
+                alert("表已满，不能再插入");
+                $("#insertLNode").val("");
+            } else if (pattern.exec($("#insertLNode").val()) == null || $("#insertLNode").val() == "") {
+                //使用正则表达式判断输入的内容是否为大写字母
+                alert("请输入正确的字母");
+                $("#insertLNode").val("");
+            }
+            else {
+                var times=0;
+                var clockLnode = setInterval(function () {
+                    context.clearRect(0,499,900,200);
+                    //依次绘制最后一个元素之前的所有元素
+                    context.save();
+                    console.log(LNode);
+                    //此时数组里还没有刚获取到的值
+                    for(var i=0;i<LNode.length;i++)
+                    {
+                        if (i===0){
+                            console.log(LNode.length);
+                            if(LNode.length===1){
+                                //是第一个元素
+
+                                drawLnodeItem(context,40,500,80,40,1,"#444","#fff",LNode[i],3);
+                            } else{
+                                drawLnodeItem(context,40,500,80,40,1,"#444","#fff",LNode[i],4);
+                            }
+
+                        }else if(i === LNode.length - 1){
+                            drawLnodeItem(context,40,500,80,40,1,"#444","#fff",LNode[i],2);
+                        } else {
+                            drawLnodeItem(context,40,500,80,40,1,"#444","#fff",LNode[i],0);
+                        }
+                        context.translate(164,0);
+                    }
+                    context.restore();
+                    context.clearRect(204*(LNode.length),499,122,10);
+                    drawLnodeItem(context,164*(LNode.length)+times,500,80,40,1,"#444","#FFFF00",$("#insertLNode").val(),2);
+                    //context.clearRect(164*(LNode.length)-40,499,40,40);
+                    drawLineArrow(context,164*(LNode.length),500+20,164*(LNode.length)+times,500+20);
+                    times+=5;
+                    if (times >= 40){
+                        clearInterval(clockLnode);
+                    }
+                },100);
+
+                //绘制过渡动画
+                setTimeout(function () {
+                    LNode[LNode.length]=$("#insertLNode").val();
+                    console.log(LNode);
+                    //开始绘制，首先清空画布
+                    context.clearRect(0,499,900,600);
+                    context.save();
+                    context.translate(40,0);
+                    drawLnodeItem(context,0,500,80,40,1,"#444","#fff",LNode[0],4);
+                    for(var j=1;j<LNode.length;j++){
+                        context.translate(164,0);
+                        console.log(j);
+                        if(j === LNode.length - 1){
+                            drawLnodeItem(context,0,500,80,40,1,"#444","#fff",LNode[j],1);
+                        } else {
+                            drawLnodeItem(context,0,500,80,40,1,"#444","#fff",LNode[j],0);
+                        }
+
+                    }
+                    context.restore();
+                    $("#insertLNode").val("");
+                },3000);
+
+            }
+        })
+
+
+    };
+
+
+</script>
+</html>

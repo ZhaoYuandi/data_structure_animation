@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../components/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            position: relative;
+        }
+        #canvas {
+            position: absolute;
+            border: 1px solid #ccc;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        #operateInsert{
+            width:200px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        #insert,#sort{
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="alert alert-info" role="alert" style="text-align: center">
+    注： 为确保演示效果，默认最多演示十个元素
+</div>
+<canvas id="canvas" width="1000" height="500">
+
+</canvas>
+
+<input type="text" class="form-control" placeholder="请输入插入元素的值..." id="operateInsert">
+<br>
+<button type="button" id="insert" class="btn btn-primary">插入</button>
+<button type="button" id="sort" class="btn btn-primary">查找</button>
+<br><br>
+
+</body>
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+
+        //判断浏览器是否支持canvas
+        if (canvas.getContext("2d")) {
+            var context = canvas.getContext("2d");
+        } else {
+            alert("当前浏览器不支持canvas，请更换浏览器稍后再试")
+        }
+
+        var array = [];
+        drawInsertSort(context,array,-1);
+
+        //插入操作
+        $("#insert").click(function () {
+            var pattern = /^(-)?\d+(\.\d+)?$/;
+            if(array.length>=10){
+                alert("警告：为保证演示质量，默认最多添加10个元素");
+            } else if (pattern.exec($("#operateInsert").val()) == null||$("#operateInsert").val()==""){
+                alert("请输入正确的数字");
+            } else {
+                array[array.length]=$("#operateInsert").val();
+                drawSearchArrray(context,array,-1);
+                //将数组中字符类型转换为数字类型
+                for(var i=0;i<array.length;i++){
+                    array[i]=parseInt(array[i]);
+                }
+                $("#operateInsert").val("");
+            }
+        });
+
+        $("#sort").click(function () {
+            //每排序一次清空一次画布
+            context.clearRect(0,0,1000,500);
+            drawSearchArrray(context,array,-1);
+            var pattern = /^(-)?\d+(\.\d+)?$/;
+            if (pattern.exec($("#operateInsert").val()) == null||$("#operateInsert").val()=="") {
+                alert("请输入正确的数字");
+            } else {
+                var i=0;
+                var searchItem=parseInt($("#operateInsert").val());
+                var flag=0;
+                var orderSearchTimer=setInterval(function () {
+                    if (flag===0){
+                        context.clearRect(0,0,1000,500);
+                        if (array[i]!==searchItem){
+                            drawSearchArrray(context,array,-1);
+                            drawSearchItem(context,searchItem,50+i*75,150,"#fff","#0000ff");
+                        } else {
+                            drawSearchArrray(context,array,i);
+                            drawSearchItem(context,searchItem,50+i*75,150,"#ffff00","#ff0000");
+                            flag=1;
+                            //alert("查找成功"+searchItem+"是当前数组中的第"+i+"号元素");
+                            //clearInterval(orderSearchTimer);
+                        }
+                        i++;
+                        if(i>array.length){
+                            flag=2;
+                        }
+                    } else if(flag===1){
+                        alert("查找成功,"+searchItem+"是当前数组中的第"+i+"号元素");
+                        clearInterval(orderSearchTimer);
+                    } else {
+                        alert("查找失败，当前数组中不存在值为"+searchItem+"的元素");
+                        context.clearRect(0,0,1000,500);
+                        drawSearchArrray(context,array,-1);
+                        clearInterval(orderSearchTimer);
+                    }
+
+                },1000);
+                // for(i=0;i<array.length;i++){
+                //     context.clearRect(0,0,1000,500);
+                //     if (array[i]!==parseInt($("#operateInsert").val())){
+                //         drawSearchArrray(context,array,-1);
+                //         drawSearchItem(context,parseInt($("#operateInsert").val()),50+i*75,150,"#fff","#0000ff");
+                //     } else {
+                //         drawSearchArrray(context,array,i);
+                //         drawSearchItem(context,parseInt($("#operateInsert").val()),50+i*75,150,"#ffff00","#ff0000");
+                //         break;
+                //     }
+                // }
+            }
+            $("#operateInsert").val("");
+        })
+    };
+
+
+</script>
+</html>

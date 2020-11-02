@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            position: relative;
+        }
+        #canvas {
+            position: absolute;
+            border: 1px solid #ccc;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="900" height="600">
+
+</canvas>
+<input type="text" placeholder="请输入插入元素的值..." id="insertIuput">
+<input type="button" id="insertButton" value="插入">
+<br><br>
+<input type="text" placeholder="请输入删除元素的值..." id="deleteIuput">
+<input type="button" id="deleteButton" value="删除">
+<br><br>
+<p>注： 为确保演示效果，</p>
+<p>默认最多十个元素</p>
+</body>
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+
+        //判断浏览器是否支持canvas
+        if (canvas.getContext("2d")) {
+            var context = canvas.getContext("2d");
+        } else {
+            alert("当前浏览器不支持canvas，请更换浏览器稍后再试")
+        }
+
+        var index = 0;
+        var Sqlist = [];
+
+
+        //插入操作
+        $("#insertButton").click(function () {
+            var pattern = /^(-)?\d+(\.\d+)?$/;
+
+            if (Sqlist.length > 10){
+                alert("表已满，不能再插入");
+            } else if (pattern.exec($("#insertIuput").val()) == null || $("#insertIuput").val() == "") {
+                //使用正则表达式判断输入的内容是否为数字
+                alert("请输入正确的数字")
+            }
+            // else if( Sqlist.length === 0){
+            //     //输入第一个数
+            //     Sqlist[0] = parseInt($("#insertIuput").val());
+            //     context.save();
+            //     context.translate(62 * Sqlist.length,0);
+            //     drawSqlist(context,Sqlist[0],"#FFFFFF");
+            //     context.restore();
+            //     //清空输入框
+            //     $("#insertIuput").val("");
+            // }
+            else {
+                //寻找要插入的位置
+                var position = SqlistInFind(Sqlist,parseInt($("#insertIuput").val()));
+                console.log(position);
+                //插入到指定位置
+                Sqlist = SqlistInsert(Sqlist,position,parseInt($("#insertIuput").val()));
+                console.log(Sqlist);
+                //清空输入框
+                $("#insertIuput").val("");
+
+                //绘制操作
+                //清空画布
+                context.clearRect(0,0,900,600);
+                //依次绘制
+                for (var i = 0; i < Sqlist.length; i++){
+                    context.save();
+                    context.translate(62 * (i + 1),0);
+                    if (i === position){
+                        drawSqlist(context,Sqlist[i], "#FFFF00");
+                    } else {
+                        drawSqlist(context,Sqlist[i], "#FFFFFF");
+                    }
+                    context.restore();
+                }
+            }
+        });
+        //删除操作
+        $("#deleteButton").click(function () {
+            var pattern = /^(-)?\d+(\.\d+)?$/;
+            console.log($("#deleteIuput").val());
+            if (pattern.exec($("#deleteIuput").val()) == null || $("#deleteIuput").val() == ""){
+                alert("请输入正确的待删除元素");
+            } else if (Sqlist.length === 0){
+                alert("当前表中没有元素，请先添加元素后进行删除操作");
+            } else {
+                //开始删除
+                var canDelete = false;
+                for (var i = 0; i < Sqlist.length; i++){
+                    //判断是否可以进行操作
+                    if(Sqlist[i] === parseInt($("#deleteIuput").val())){
+                        Sqlist = SqlistDelete(Sqlist, parseInt($("#deleteIuput").val()), i);
+                        canDelete = true;
+                        //绘制元素
+                        context.clearRect(0,0,900,600);
+                        for (var j = 0; j < Sqlist.length; j++){
+                            context.save();
+                            context.translate(62 * (j + 1),0);
+                            drawSqlist(context,Sqlist[j], "#FFFFFF");
+                            context.restore();
+                        }
+                    }
+                }
+                if(canDelete === false){
+                    alert("表中不存在该元素，请验证后再进行插入操作");
+                }
+                //清空输入框
+                $("#deleteIuput").val("");
+                console.log(Sqlist);
+            }
+        })
+    };
+</script>
+</html>

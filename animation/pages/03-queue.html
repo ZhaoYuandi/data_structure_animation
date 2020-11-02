@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../components/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            position: relative;
+        }
+        #canvas {
+            position: absolute;
+            border: 1px solid #ccc;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        #operateQueue{
+            width:200px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        #inQueue,#outQueue{
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="alert alert-info" role="alert" style="text-align: center">
+    注： 为确保演示效果，默认最多演示十个元素
+</div>
+<canvas id="canvas" width="1000" height="500">
+
+</canvas>
+
+<input type="text" class="form-control" placeholder="请输入插入元素的值..." id="operateQueue">
+<br>
+<button type="button" id="inQueue" class="btn btn-primary">入栈</button>
+<button type="button" id="outQueue" class="btn btn-primary">出栈</button>
+<br><br>
+
+</body>
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+
+        //判断浏览器是否支持canvas
+        if (canvas.getContext("2d")) {
+            var context = canvas.getContext("2d");
+        } else {
+            alert("当前浏览器不支持canvas，请更换浏览器稍后再试")
+        }
+        var img = new Image();
+        var queue = [];
+        drawQueueFinal(context,queue);
+        context.save();
+        context.translate(250,250);
+        context.rotate(-Math.PI/12);
+        drawLineArrow(context,0,0,-100,0,"red");
+        context.rotate(-Math.PI/12);
+        drawLineArrow(context,0,0,-100,0,"blue");
+        context.restore();
+
+
+        var front=0;
+        var rear=0;
+        $("#inQueue").click(function () {
+           if(queue.length>=7){
+               alert("队列已满，不能继续入队");
+           } else if ($("#operateQueue").val()==""){
+               alert("请输入要加入的值");
+           } else {
+               queue[queue.length]=$("#operateQueue").val();
+               rear++;
+               if (rear===8){
+                   rear=0;
+               }
+               //绘制队列的结构
+               drawQueueFinal(context,queue,front);
+               //绘制指针
+               context.save();
+               context.translate(250,250);
+               context.rotate(Math.PI/4*front-Math.PI/12);
+               drawLineArrow(context,0,0,-100,0,"red");
+               context.restore();
+               context.save();
+               context.translate(250,250);
+               context.rotate(Math.PI/4*rear-Math.PI/12);
+               drawLineArrow(context,0,0,-100,0,"blue");
+               context.restore();
+               $("#operateQueue").val("");
+           }
+        });
+
+        $("#outQueue").click(function () {
+            if(queue.length<=0){
+                alert("队列已空，不能继续出队");
+            } else {
+                front++;
+                if (front===8){
+                    front=0;
+                }
+                for(var i=0;i<queue.length;i++){
+                    queue[i]=queue[i+1];
+                }
+                queue.length--;
+                //绘制队列的结构
+                drawQueueFinal(context,queue,front);
+                //绘制指针
+                context.save();
+                context.translate(250,250);
+                context.rotate(Math.PI/4*front-Math.PI/6);
+                drawLineArrow(context,0,0,-100,0,"red");
+                context.restore();
+                context.save();
+                context.translate(250,250);
+                context.rotate(Math.PI/4*rear-Math.PI/12);
+                drawLineArrow(context,0,0,-100,0,"blue");
+                context.restore();
+                $("#operateQueue").val("");
+            }
+        })
+
+
+
+    };
+
+
+</script>
+</html>

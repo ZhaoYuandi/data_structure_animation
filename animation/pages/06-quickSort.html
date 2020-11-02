@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../components/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            position: relative;
+        }
+        #canvas {
+            position: absolute;
+            border: 1px solid #ccc;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        #operateInsert{
+            width:200px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        #insert,#sort{
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="alert alert-info" role="alert" style="text-align: center">
+    注： 为确保演示效果，默认最多演示十个元素
+</div>
+<canvas id="canvas" width="1000" height="500">
+
+</canvas>
+
+<input type="text" class="form-control" placeholder="请输入插入元素的值..." id="operateInsert">
+<br>
+<button type="button" id="insert" class="btn btn-primary">插入</button>
+<button type="button" id="sort" class="btn btn-primary">排序</button>
+<br><br>
+
+</body>
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById("canvas");
+
+        //判断浏览器是否支持canvas
+        if (canvas.getContext("2d")) {
+            var context = canvas.getContext("2d");
+        } else {
+            alert("当前浏览器不支持canvas，请更换浏览器稍后再试")
+        }
+
+        var array = [];
+
+    };
+
+
+</script>
+</html>

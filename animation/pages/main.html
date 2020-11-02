@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>data structure</title>
+	<link rel="stylesheet" href="../components/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+	<link href="../components/css/accordion.css" rel="stylesheet" type="text/css" />
+	<link href="../components/css/main.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<div id="navigation">
+	<ul class="menu">
+		<li><a href="#" id="backToHome"><i class="web-font-01">首页</i></a></li>
+		<li><a href="#"><i class="web-font-01">线性表</i></a>
+			<ul class="submenu">
+				<li><a href="#" id="sqlistNav" class="nav-item">顺序表</a></li>
+				<li><a href="#" id="lnodeNav" class="nav-item">链表</a></li>
+			</ul>
+		</li>
+		<li><a href="#s2"><i class="web-font-01">栈与队列</i></a>
+			<ul class="submenu">
+				<li><a href="#" id="stackNav">栈</a></li>
+				<li><a href="#" id="queueNav">队列</a></li>
+			</ul>
+		</li>
+		<li><a href="#s2"><i class="web-font-01">树</i></a>
+            <ul class="submenu">
+                <li><a href="#" id="treeNav">树的操作</a></li>
+            </ul>
+		</li>
+		<li><a href="#s2"><i class="web-font-01">图</i></a>
+			<ul class="submenu">
+				<li><a href="#" id="graphNav">图的操作</a></li>
+			</ul>
+		</li>
+		<li><a href="#s2"><i class="web-font-01">排序</i></a>
+            <ul class="submenu">
+                <li><a href="#" id="insertSort">插入排序</a></li>
+                <li><a href="#" id="bubbleSort">冒泡排序</a></li>
+                <li><a href="#" id="selectSort">选择排序</a></li>
+            </ul>
+		</li>
+		<li><a href="#s2"><i class="web-font-01">查找</i></a>
+			<ul class="submenu">
+				<li><a href="#" id="orderSearch">顺序查找</a></li>
+				<li><a href="#" id="binSearch">折半查找</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+<div id="entrance" class="content" style="background-image: url('../components/img/index02.jpg')">
+	<div class="gap"></div>
+	<div class="showCase" id="showCase">
+		<div id="introduce">
+			<h1><i class="web-font-01">数据结构</i></h1>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据结构(data structure)是带有结构特性的数据元素的集合，它研究的是数据的逻辑结构和数据的物理结构以及它们之间的相互关系，并对这种结构定义相适应的运算，设计出相应的算法，并确保经过这些运算以后所得到的新结构仍保持原来的结构类型。简而言之，数据结构是相互之间存在一种或多种特定关系的数据元素的集合，即带“结构”的数据元素的集合。“结构”就是指数据元素之间存在的关系，分为逻辑结构和存储结构。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据的逻辑结构和物理结构是数据结构的两个密切相关的方面，同一逻辑结构可以对应不同的存储结构。算法的设计取决于数据的逻辑结构，而算法的实现依赖于指定的存储结构。</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据结构的研究内容是构造复杂软件系统的基础，它的核心技术是分解与抽象。通过分解可以划分出数据的3个层次；再通过抽象，舍弃数据元素的具体内容，就得到逻辑结构。类似地，通过分解将处理要求划分成各种功能，再通过抽象舍弃实现细节，就得到运算的定义。上述两个方面的结合可以将问题变换为数据结构。这是一个从具体（即具体问题）到抽象（即数据结构）的过程。然后，通过增加对实现细节的考虑进一步得到存储结构和实现运算，从而完成设计任务。这是一个从抽象（即数据结构）到具体（即具体实现）的过程。</p>
+		</div>
+		<div id="exhibition">
+			<button type="button" id="optionFirst" class="btn btn-primary">操作一</button>
+			<button type="button" id="optionSecond" class="btn btn-primary">操作二</button>
+			<input type="text" class="form-control" placeholder="请输入要操作元素的值..." id="inputElement">
+			<button type="button" id="warning"  disabled>注：为确保演示效果，请控制要加入元素的数量！</button>
+			<!--<div class="alert alert-danger" id="warning" role="alert">-->
+				<!--注：为确保演示效果，最多加入十个元素！-->
+			<!--</div>-->
+			<br>
+            <!--<button type="button" id="optionThird" class="btn btn-primary">操作三</button>-->
+			<canvas id="canvas" width="1000px" height="500px">
+
+			</canvas>
+
+		</div>
+
+	</div>
+</div>
+<!--<div id="stack" class="content"></div>-->
+<!--<div id="queue" class="content"></div>-->
+<!--<div id="tree" class="content"></div>-->
+<!--<div id="graph" class="content"></div>-->
+<!--<div id="sequence" class="content"></div>-->
+<!--<div id="search" class="content"></div>-->
+<script src="../components/js/jquery.min.js"></script>
+<script src="../components/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="../components/js/draw.js"></script>
+<script src="../components/js/main.js"></script>
+</body>
+</html>
